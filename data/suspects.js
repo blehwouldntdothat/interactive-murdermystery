@@ -4,5 +4,6 @@ const suspects = [
     { id: "clara", name: "Clara 🎭" },
     { id: "dmitri", name: "Dmitri 🧪" },
     { id: "eva", name: "Eva 🧤" },
-    { id: "felix", name: "Felix 🎩" }
+    { id: "felix", name: "Felix 🎩" },
+    { id: "giovanna", name: "Giovanna 🌿" }
 ];
