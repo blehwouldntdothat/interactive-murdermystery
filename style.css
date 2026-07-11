@@ -1,0 +1,16 @@
+body {
+    background: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+#clues, #statements, #results {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
