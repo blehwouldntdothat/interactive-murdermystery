@@ -1,6 +1,7 @@
 const clueTemplates = [
-    (killer, motive) => `${killer.name}'s motive was ${motive.name}.`,
-    (weapon, suspect) => `Analysts discovered traces of a weapon made of ${weapon.material} on the clothing of ${suspect.name}.`,
-    (suspect, location) => `${suspect.name} had not been in the ${location.name}.`,
-    (killer, weapon) => `The killer used a ${weapon.name}.`
+    (s, l) => `${s.name} was confirmed to NOT be in the ${l.name}.`,
+    (s, w) => `Traces of ${w.material} were found on ${s.name}'s clothing.`,
+    (w) => `The murder weapon was made of ${w.material}.`,
+    (m) => `The killer’s motive was NOT ${m.name}.`,
+    (l) => `The murder happened in the ${l.name}.`
 ];
