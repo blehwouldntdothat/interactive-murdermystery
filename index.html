@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bleh's Murder Mystery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Murdle</h1>
+
+<button id="randomBtn">Generate Random Murdle</button>
+<button id="presetBtn">Play Host’s Preset Murdle</button>
+
+<div id="clues"></div>
+<div id="statements"></div>
+
+<h2>Submit Your Guess</h2>
+<select id="guessSuspect"></select>
+<select id="guessWeapon"></select>
+<select id="guessLocation"></select>
+<select id="guessMotive"></select>
+
+<button id="submitGuess">Submit Guess</button>
+
+<div id="results"></div>
+
+<script src="data/suspects.js"></script>
+<script src="data/weapons.js"></script>
+<script src="data/locations.js"></script>
+<script src="data/motives.js"></script>
+<script src="data/statements.js"></script>
+<script src="data/clues.js"></script>
+
+<script src="puzzles/presetPuzzles.js"></script>
+
+<script src="engine/generator.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
