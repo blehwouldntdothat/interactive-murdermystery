@@ -1,6 +1,8 @@
 const suspects = [
-    { name: "Alice 🔪", id: "alice" },
-    { name: "Boris 🕶️", id: "boris" },
-    { name: "Clara 🎭", id: "clara" },
-    { name: "Dmitri 🧪", id: "dmitri" }
+    { id: "alice", name: "Alice 🔪" },
+    { id: "boris", name: "Boris 🕶️" },
+    { id: "clara", name: "Clara 🎭" },
+    { id: "dmitri", name: "Dmitri 🧪" },
+    { id: "eva", name: "Eva 🧤" },
+    { id: "felix", name: "Felix 🎩" }
 ];
