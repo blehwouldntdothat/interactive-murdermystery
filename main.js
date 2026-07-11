@@ -1,81 +1,51 @@
 let currentPuzzle = null;
 
-function getById(id, arr) {
-    return arr.find(x => x.id === id);
-}
+function renderPuzzle(p) {
+    const cluesDiv = document.getElementById("clues");
+    const statementsDiv = document.getElementById("statements");
 
-function renderClues(puzzle) {
-    const killer = getById(puzzle.killer, suspects);
-    const weapon = getById(puzzle.weapon, weapons);
-    const location = getById(puzzle.location, locations);
-    const motive = getById(puzzle.motive, motives);
+    cluesDiv.innerHTML = "";
+    statementsDiv.innerHTML = "";
 
-    let output = "";
+    // Generate clues
+    const clues = [
+        clueTemplates[0](randomItem(p.pool.suspects), randomItem(p.pool.locations)),
+        clueTemplates[1](randomItem(p.pool.suspects), randomItem(p.pool.weapons)),
+        clueTemplates[2](p.weapon),
+        clueTemplates[3](randomItem(p.pool.motives)),
+        clueTemplates[4](p.location)
+    ];
 
-    clueTemplates.forEach(template => {
-        output += `<p>${template(killer, motive, weapon, location)}</p>`;
+    clues.forEach(c => cluesDiv.innerHTML += `<p>${c}</p>`);
+
+    // Generate statements
+    p.pool.suspects.forEach(s => {
+        const template = randomItem(statementTemplates);
+
+        let statement = template(
+            s,
+            randomItem([...p.pool.locations, ...p.pool.weapons, ...p.pool.motives])
+        );
+
+        // If killer → invert truth
+        if (s.id === p.killer.id) {
+            statement = invertStatement(statement);
+        }
+
+        statementsDiv.innerHTML += `<p><strong>${s.name}:</strong> ${statement}</p>`;
     });
-
-    document.getElementById("clues").innerHTML = output;
 }
 
-function renderStatements(puzzle) {
-    let output = "";
-
-    suspects.forEach(s => {
-        const isKiller = s.id === puzzle.killer;
-        const truth = !isKiller;
-
-        output += `<h3>${s.name}</h3>`;
-
-        statements[s.id].forEach(st => {
-            output += `<p>${truth ? st : "❌ " + st}</p>`;
-        });
-    });
-
-    document.getElementById("statements").innerHTML = output;
-}
-
-function populateGuessSelectors() {
-    const sSel = document.getElementById("guessSuspect");
-    const wSel = document.getElementById("guessWeapon");
-    const lSel = document.getElementById("guessLocation");
-    const mSel = document.getElementById("guessMotive");
-
-    suspects.forEach(s => sSel.innerHTML += `<option value="${s.id}">${s.name}</option>`);
-    weapons.forEach(w => wSel.innerHTML += `<option value="${w.id}">${w.name}</option>`);
-    locations.forEach(l => lSel.innerHTML += `<option value="${l.id}">${l.name}</option>`);
-    motives.forEach(m => mSel.innerHTML += `<option value="${m.id}">${m.name}</option>`);
-}
-
-function checkGuess() {
-    const s = document.getElementById("guessSuspect").value;
-    const w = document.getElementById("guessWeapon").value;
-    const l = document.getElementById("guessLocation").value;
-    const m = document.getElementById("guessMotive").value;
-
-    let result = "";
-
-    result += `<p>Suspect: ${s === currentPuzzle.killer ? "✔️ Correct" : "❌ Wrong"}</p>`;
-    result += `<p>Weapon: ${w === currentPuzzle.weapon ? "✔️ Correct" : "❌ Wrong"}</p>`;
-    result += `<p>Location: ${l === currentPuzzle.location ? "✔️ Correct" : "❌ Wrong"}</p>`;
-    result += `<p>Motive: ${m === currentPuzzle.motive ? "✔️ Correct" : "❌ Wrong"}</p>`;
-
-    document.getElementById("results").innerHTML = result;
+function invertStatement(text) {
+    return text.replace("never", "did").replace("was", "was not").replace("was not", "was");
 }
 
 document.getElementById("randomBtn").onclick = () => {
-    currentPuzzle = generateRandomPuzzle();
-    renderClues(currentPuzzle);
-    renderStatements(currentPuzzle);
+    currentPuzzle = generatePuzzle();
+    renderPuzzle(currentPuzzle);
 };
 
 document.getElementById("presetBtn").onclick = () => {
-    currentPuzzle = presetPuzzles[0];
-    renderClues(currentPuzzle);
-    renderStatements(currentPuzzle);
+    currentPuzzle = presetPuzzle;
+    renderPuzzle(currentPuzzle);
 };
-
-document.getElementById("submitGuess").onclick = checkGuess;
-
-populateGuessSelectors();
