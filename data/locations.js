@@ -1,6 +1,7 @@
 const locations = [
-    { name: "Kitchen 🍳", id: "kitchen" },
-    { name: "Library 📚", id: "library" },
-    { name: "Garden 🌿", id: "garden" },
-    { name: "Basement 🕳️", id: "basement" }
+    { id: "kitchen", name: "Kitchen 🍳" },
+    { id: "library", name: "Library 📚" },
+    { id: "garden", name: "Garden 🌿" },
+    { id: "basement", name: "Basement 🕳️" },
+    { id: "attic", name: "Attic 🪜" }
 ];
