@@ -1,6 +1,7 @@
 const motives = [
-    { name: "Jealousy 💚", id: "jealousy" },
-    { name: "Revenge 🔥", id: "revenge" },
-    { name: "Greed 💰", id: "greed" },
-    { name: "Fear 😱", id: "fear" }
+    { id: "jealousy", name: "Jealousy 💚" },
+    { id: "revenge", name: "Revenge 🔥" },
+    { id: "greed", name: "Greed 💰" },
+    { id: "fear", name: "Fear 😱" },
+    { id: "power", name: "Power 👑" }
 ];
