@@ -1,51 +1,77 @@
 let currentPuzzle = null;
 
-function renderPuzzle(p) {
+function populateSelectors(puzzle) {
+    const sSel = document.getElementById("guessSuspect");
+    const wSel = document.getElementById("guessWeapon");
+    const lSel = document.getElementById("guessLocation");
+    const mSel = document.getElementById("guessMotive");
+
+    sSel.innerHTML = "";
+    wSel.innerHTML = "";
+    lSel.innerHTML = "";
+    mSel.innerHTML = "";
+
+    puzzle.pool.suspects.forEach(s => {
+        sSel.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+    });
+    puzzle.pool.weapons.forEach(w => {
+        wSel.innerHTML += `<option value="${w.id}">${w.name}</option>`;
+    });
+    puzzle.pool.locations.forEach(l => {
+        lSel.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+    });
+    puzzle.pool.motives.forEach(m => {
+        mSel.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+    });
+}
+
+function renderPuzzle(puzzle) {
+    currentPuzzle = puzzle;
+
     const cluesDiv = document.getElementById("clues");
     const statementsDiv = document.getElementById("statements");
 
     cluesDiv.innerHTML = "";
     statementsDiv.innerHTML = "";
 
-    // Generate clues
-    const clues = [
-        clueTemplates[0](randomItem(p.pool.suspects), randomItem(p.pool.locations)),
-        clueTemplates[1](randomItem(p.pool.suspects), randomItem(p.pool.weapons)),
-        clueTemplates[2](p.weapon),
-        clueTemplates[3](randomItem(p.pool.motives)),
-        clueTemplates[4](p.location)
-    ];
+    const clues = buildClues(puzzle);
+    const statements = buildStatements(puzzle);
 
-    clues.forEach(c => cluesDiv.innerHTML += `<p>${c}</p>`);
-
-    // Generate statements
-    p.pool.suspects.forEach(s => {
-        const template = randomItem(statementTemplates);
-
-        let statement = template(
-            s,
-            randomItem([...p.pool.locations, ...p.pool.weapons, ...p.pool.motives])
-        );
-
-        // If killer → invert truth
-        if (s.id === p.killer.id) {
-            statement = invertStatement(statement);
-        }
-
-        statementsDiv.innerHTML += `<p><strong>${s.name}:</strong> ${statement}</p>`;
+    clues.forEach(c => {
+        cluesDiv.innerHTML += `<p>${c}</p>`;
     });
+
+    puzzle.pool.suspects.forEach(s => {
+        const text = statements[s.id];
+        statementsDiv.innerHTML += `<p><strong>${s.name}:</strong> ${text}</p>`;
+    });
+
+    populateSelectors(puzzle);
 }
 
-function invertStatement(text) {
-    return text.replace("never", "did").replace("was", "was not").replace("was not", "was");
+function submitGuess() {
+    if (!currentPuzzle) return;
+
+    const s = document.getElementById("guessSuspect").value;
+    const w = document.getElementById("guessWeapon").value;
+    const l = document.getElementById("guessLocation").value;
+    const m = document.getElementById("guessMotive").value;
+
+    const resDiv = document.getElementById("results");
+    resDiv.innerHTML = "";
+
+    resDiv.innerHTML += `<p>Suspect: ${s === currentPuzzle.killer.id ? "✔️ Correct" : "❌ Wrong"}</p>`;
+    resDiv.innerHTML += `<p>Weapon: ${w === currentPuzzle.weapon.id ? "✔️ Correct" : "❌ Wrong"}</p>`;
+    resDiv.innerHTML += `<p>Location: ${l === currentPuzzle.location.id ? "✔️ Correct" : "❌ Wrong"}</p>`;
+    resDiv.innerHTML += `<p>Motive: ${m === currentPuzzle.motive.id ? "✔️ Correct" : "❌ Wrong"}</p>`;
 }
 
 document.getElementById("randomBtn").onclick = () => {
-    currentPuzzle = generatePuzzle();
-    renderPuzzle(currentPuzzle);
+    renderPuzzle(generateRandomPuzzle());
 };
 
 document.getElementById("presetBtn").onclick = () => {
-    currentPuzzle = presetPuzzle;
-    renderPuzzle(currentPuzzle);
+    renderPuzzle(presetPuzzle);
 };
+
+document.getElementById("submitGuess").onclick = submitGuess;
