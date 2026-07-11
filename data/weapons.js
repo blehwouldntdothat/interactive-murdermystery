@@ -1,6 +1,7 @@
 const weapons = [
-    { name: "Steel Knife 🔪", material: "steel", id: "knife" },
-    { name: "Poison Vial ☠️", material: "chemical", id: "poison" },
-    { name: "Rope 🧵", material: "fiber", id: "rope" },
-    { name: "Wrench 🔧", material: "metal", id: "wrench" }
+    { id: "knife", name: "Knife 🔪", material: "metal" },
+    { id: "rope", name: "Rope 🧵", material: "fiber" },
+    { id: "poison", name: "Poison ☠️", material: "chemical" },
+    { id: "wrench", name: "Wrench 🔧", material: "metal" },
+    { id: "bat", name: "Bat 🦇", material: "wood" }
 ];
